@@ -176,7 +176,7 @@ const Portfolio = () => {
           </div>
           
           <div className="mt-12 flex flex-wrap justify-center gap-4">
-            {['Java', 'JavaScript', 'React.js', 'Spring Framework', 'Python', 'C/C++', 'Linux', 'REST APIs'].map((tech, index) => (
+            {['Java', 'JavaScript', 'React.js', 'Spring Framework', 'Python', 'Django', 'C/C++', 'SQL', 'Linux', 'REST APIs', 'AWS'].map((tech, index) => (
               <span key={index} className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-gray-700 dark:text-gray-300">
                 {tech}
               </span>
