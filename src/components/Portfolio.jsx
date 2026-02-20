@@ -351,7 +351,10 @@ const Portfolio = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                   <div className="absolute right-0 top-0 w-20 h-20 bg-blue-500 dark:bg-blue-600 rounded-bl-full transform translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500"></div>
                 </div>
-                <h3 className="text-2xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                <h3 
+                  className="text-2xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 cursor-pointer"
+                  onClick={() => setSelectedProject(project)}
+                >
                   {project.title}{project.subtitle ? `: ${project.subtitle}` : ''}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
