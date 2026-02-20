@@ -265,17 +265,15 @@ const Portfolio = () => {
           </h2>
           <div className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300 space-y-6">
             <p className="text-lg opacity-0 transform translate-y-4 animate-fade-in-up">
-              Hello! I'm Andrew Kobus, a Computer Science senior at Boise State University.
-              I love working on new types of projects and learning new things.
+              I am a senior Computer Science student at Boise State University with hands on experience building secure, scalable systems in both enterprise and production environments. I focus on turning complex technical problems into clean, maintainable solutions that are built to last.
             </p>
+
             <p className="text-lg opacity-0 transform translate-y-4 animate-fade-in-up animation-delay-200">
-              I'm passionate about understanding systems at every level—from high-level application
-              development to low-level hardware interactions.
+              I work comfortably across the stack, with particular strength in backend architecture, systems thinking, and AI assisted engineering workflows. I use structured prompting, iterative validation, and disciplined review to accelerate development while maintaining correctness and security.
             </p>
+
             <p className="text-lg opacity-0 transform translate-y-4 animate-fade-in-up animation-delay-400">
-              Whether it's building software applications or diving deep into digital logic design,
-              my desire to learn drives me to explore new technologies and continuously improve my
-              skills across the entire spectrum of computing.
+              I am motivated by roles where technical decisions have real world impact. Whether collaborating with teammates or designing systems independently, I aim to connect engineering work to broader performance, reliability, and business outcomes.
             </p>
           </div>
         </div>
