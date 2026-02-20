@@ -1,21 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  GithubIcon, 
-  LinkedinIcon, 
-  MailIcon, 
-  ExternalLinkIcon, 
+import { useState, useEffect, useRef } from 'react';
+import {
+  GithubIcon,
+  LinkedinIcon,
+  MailIcon,
+  ExternalLinkIcon,
   CodeIcon,
-  ShieldIcon, 
+  ShieldIcon,
   DatabaseIcon,
   SunIcon,
   MoonIcon
 } from 'lucide-react';
+import ProjectModal from './ProjectModal';
+import { projects } from './data/projects';
 
 const Portfolio = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolling, setIsScrolling] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [selectedProject, setSelectedProject] = useState(null);
   const heroRef = useRef(null);
   const projectRefs = useRef([]);
 
@@ -33,7 +36,7 @@ const Portfolio = () => {
 
     const handleScroll = () => {
       setIsScrolling(window.scrollY > 50);
-      
+
       const sections = ['home', 'about', 'skills', 'projects'];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
@@ -43,7 +46,7 @@ const Portfolio = () => {
         }
         return false;
       });
-      
+
       if (currentSection) {
         setActiveSection(currentSection);
       }
@@ -60,7 +63,7 @@ const Portfolio = () => {
         if (ref) {
           const rect = ref.getBoundingClientRect();
           const isVisible = rect.top <= window.innerHeight * 0.8;
-          
+
           if (isVisible) {
             ref.style.opacity = '1';
             ref.style.transform = 'translateY(0)';
@@ -79,10 +82,10 @@ const Portfolio = () => {
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
-    
+
     // Initial call to set up animations
     handleScroll();
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
@@ -95,29 +98,50 @@ const Portfolio = () => {
   };
 
   const skills = [
-    { name: 'Full-Stack Development', icon: <CodeIcon className="w-6 h-6" />, description: 'Building end-to-end applications with modern frameworks'},
-    { name: 'Cybersecurity', icon: <ShieldIcon className="w-6 h-6" />, description: 'Implementing secure systems and best practices'},
-    { name: 'Database Design', icon: <DatabaseIcon className="w-6 h-6" />, description: 'Designing efficient and scalable data structures'},
+    {
+      name: 'AI First Development',
+      icon: <CodeIcon className="w-6 h-6" />,
+      description:
+        'Leveraging AI assisted workflows with structured prompting, iterative validation, and rigorous review to accelerate development while maintaining correctness and security with intense validation.',
+    },
+    {
+      name: 'Scalable Backend Systems',
+      icon: <DatabaseIcon className="w-6 h-6" />,
+      description:
+        'Designing secure, scalable APIs with strong authentication, relational data modeling, and clean architecture principles for production ready systems.',
+    },
+    {
+      name: 'Systems Thinking',
+      icon: <ShieldIcon className="w-6 h-6" />,
+      description:
+        'Approaching problems from low level fundamentals to high level architecture, with an emphasis on debugging, memory awareness, and performance reasoning.',
+    },
   ];
 
-  const projects = [
+  const skillCategories = [
     {
-      title: 'Planly',
-      description: 'A full-stack organization management platform using Spring Boot and React with real-time updates.',
-      link: 'https://github.com/andkob/Planly',
-      tags: ['React', 'Spring Boot', 'REST API']
+      title: 'Top Programming Languages',
+      items: ['Java', 'Python', 'TypeScript', 'C'],
     },
     {
-      title: 'Slice',
-      description: 'Personal finance management app with third-party banking API integration and real-time tracking.',
-      link: 'https://github.com/andkob/Slice',
-      tags: ['React', 'express.js', 'APIs', 'Financial Tech']
+      title: 'Systems & Low Level',
+      items: ['Memory Management', 'Embedded Programming', 'Debugging & Physical Reasoning'],
     },
     {
-      title: 'EduChain',
-      description: 'Educational blockchain implementation in Java demonstrating core concepts and principles.',
-      link: 'https://github.com/andkob/EduChain',
-      tags: ['Java', 'Blockchain', 'Cryptography']
+      title: 'Backend Development',
+      items: ['Spring Boot', 'Django', 'REST API Design', 'SQL & Relational Databases', 'Authentication & JWT'],
+    },
+    {
+      title: 'Frontend Development',
+      items: ['React', 'Component Architecture', 'State Management', 'Responsive Design'],
+    },
+    {
+      title: 'Cloud & DevOps',
+      items: ['Docker', 'Kubernetes', 'AWS Cognito', 'AWS S3', 'AWS CloudFront', 'AWS Route 53'],
+    },
+    {
+      title: 'Engineering Practices',
+      items: ['Test Driven Development', 'Complex Systems Debugging', 'Git Branching Workflows', 'AI Assisted Development', 'Code Review & Validation'],
     }
   ];
 
@@ -144,9 +168,8 @@ const Portfolio = () => {
       </div>
 
       {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-500 ${
-        isScrolling ? 'bg-white dark:bg-gray-800 shadow-lg backdrop-blur-lg bg-opacity-80 dark:bg-opacity-80' : 'bg-transparent'
-      }`}>
+      <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolling ? 'bg-white dark:bg-gray-800 shadow-lg backdrop-blur-lg bg-opacity-80 dark:bg-opacity-80' : 'bg-transparent'
+        }`}>
         <div className="px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <span className="text-2xl font-bold text-blue-600 relative overflow-hidden group">
@@ -162,16 +185,14 @@ const Portfolio = () => {
                       const element = document.getElementById(item.toLowerCase());
                       element?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className={`transition-colors duration-300 relative group ${
-                      activeSection === item.toLowerCase()
-                        ? 'text-blue-600 font-semibold'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                    }`}
+                    className={`transition-colors duration-300 relative group ${activeSection === item.toLowerCase()
+                      ? 'text-blue-600 font-semibold'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                      }`}
                   >
                     {item}
-                    <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${
-                      activeSection === item.toLowerCase() ? 'w-full bg-blue-600' : 'bg-blue-400 group-hover:w-full'
-                    } transition-all duration-300`}></span>
+                    <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${activeSection === item.toLowerCase() ? 'w-full bg-blue-600' : 'bg-blue-400 group-hover:w-full'
+                      } transition-all duration-300`}></span>
                   </button>
                 ))}
               </div>
@@ -196,7 +217,7 @@ const Portfolio = () => {
             ))}
           </div>
         </div>
-        
+
         <div ref={heroRef} className="px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h1 className="text-6xl md:text-7xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
             <span className="inline-block transform transition-transform duration-700 hover:translate-y-[-5px]">Andrew Kobus</span>
@@ -205,20 +226,20 @@ const Portfolio = () => {
             Software Developer | Cybersecurity Enthusiast | BSU Computer Science
           </p>
           <div className="flex justify-center space-x-4">
-            <a 
-              href="https://github.com/andkob" 
+            <a
+              href="https://github.com/andkob"
               className="p-2 rounded-full bg-gray-900 dark:bg-gray-700 text-white hover:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 hover:rotate-3"
             >
               <GithubIcon className="w-6 h-6" />
             </a>
-            <a 
-              href="https://www.linkedin.com/in/andrew-kobus" 
+            <a
+              href="https://www.linkedin.com/in/andrew-kobus"
               className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 hover:rotate-3"
             >
               <LinkedinIcon className="w-6 h-6" />
             </a>
-            <a 
-              href="mailto:andrewkobus4@gmail.com" 
+            <a
+              href="mailto:andrewkobus4@gmail.com"
               className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition-all duration-300 transform hover:scale-110 hover:rotate-3"
             >
               <MailIcon className="w-6 h-6" />
@@ -244,16 +265,16 @@ const Portfolio = () => {
           </h2>
           <div className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300 space-y-6">
             <p className="text-lg opacity-0 transform translate-y-4 animate-fade-in-up">
-              Hello! I'm Andrew Kobus, a Computer Science senior at Boise State University. 
+              Hello! I'm Andrew Kobus, a Computer Science senior at Boise State University.
               I love working on new types of projects and learning new things.
             </p>
             <p className="text-lg opacity-0 transform translate-y-4 animate-fade-in-up animation-delay-200">
-              I'm passionate about understanding systems at every level—from high-level application 
+              I'm passionate about understanding systems at every level—from high-level application
               development to low-level hardware interactions.
             </p>
             <p className="text-lg opacity-0 transform translate-y-4 animate-fade-in-up animation-delay-400">
-              Whether it's building software applications or diving deep into digital logic design, 
-              my desire to learn drives me to explore new technologies and continuously improve my 
+              Whether it's building software applications or diving deep into digital logic design,
+              my desire to learn drives me to explore new technologies and continuously improve my
               skills across the entire spectrum of computing.
             </p>
           </div>
@@ -268,11 +289,11 @@ const Portfolio = () => {
             Core Skills
             <span className="block h-1 w-24 bg-blue-500 mx-auto mt-4 transform transition-transform duration-300 hover:scale-x-150"></span>
           </h2>
-          
+
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {skills.map((skill, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 group"
               >
                 <div className="text-blue-600 dark:text-blue-400 mb-4 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
@@ -283,17 +304,33 @@ const Portfolio = () => {
               </div>
             ))}
           </div>
-          
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
-            {['Java', 'JavaScript', 'React.js', 'Spring Framework', 'Python', 'Django', 'express.js', 'C/C++', 'SQL', 'Linux', 'REST APIs', 'AWS'].map((tech, index) => (
-              <span 
-                key={index} 
-                className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-gray-700 dark:text-gray-300 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700"
-              >
-                {tech}
-              </span>
-            ))}
+
+          <div className="mt-12 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-6">
+              {skillCategories.map((cat, catIndex) => (
+                <div
+                  key={catIndex}
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-all duration-500 hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    {cat.title}
+                  </h3>
+
+                  <div className="flex flex-wrap gap-3">
+                    {cat.items.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="px-4 py-2 bg-gray-50 dark:bg-gray-700 rounded-full shadow-md text-gray-700 dark:text-gray-200 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:bg-blue-50 dark:hover:bg-gray-600"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+
         </div>
       </section>
 
@@ -301,13 +338,13 @@ const Portfolio = () => {
       <section id="projects" className="py-20 bg-white dark:bg-gray-800 transition-colors duration-500 relative z-10">
         <div className="px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-12 relative overflow-hidden">
-            Featured Projects
+            Experience & Projects
             <span className="block h-1 w-24 bg-blue-500 mx-auto mt-4 transform transition-transform duration-300 hover:scale-x-150"></span>
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 ref={el => projectRefs.current[index] = el}
                 className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 transition-all duration-700 transform opacity-0 translate-y-12 hover:shadow-xl group"
                 style={{ transitionDelay: `${index * 100}ms` }}
@@ -317,32 +354,47 @@ const Portfolio = () => {
                   <div className="absolute right-0 top-0 w-20 h-20 bg-blue-500 dark:bg-blue-600 rounded-bl-full transform translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500"></div>
                 </div>
                 <h3 className="text-2xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                  {project.title}
+                  {project.title}{project.subtitle ? `: ${project.subtitle}` : ''}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map((tag, tagIndex) => (
-                    <span 
-                      key={tagIndex} 
+                    <span
+                      key={tagIndex}
                       className="text-sm px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full transition-all duration-300 hover:bg-blue-200 dark:hover:bg-blue-800"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
-                <a
-                  href={project.link}
-                  className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 relative group"
-                >
-                  <span>View Project</span> 
-                  <ExternalLinkIcon className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
-                </a>
+                {project.link ? (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 relative group"
+                  >
+                    <span>View Project</span>
+                    <ExternalLinkIcon className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => setSelectedProject(project)}
+                    className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 relative group"
+                  >
+                    <span>View Details</span>
+                  </button>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
 
       {/* Footer with hover interactions */}
       <footer className="bg-gray-900 text-white py-12 relative overflow-hidden">
@@ -357,20 +409,20 @@ const Portfolio = () => {
         <div className="px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <p className="text-lg mb-4">Let's Connect</p>
           <div className="flex justify-center space-x-6 mb-8">
-            <a 
-              href="https://github.com/andkob" 
+            <a
+              href="https://github.com/andkob"
               className="hover:text-blue-400 transition-all duration-300 transform hover:scale-125"
             >
               <GithubIcon className="w-6 h-6" />
             </a>
-            <a 
-              href="https://www.linkedin.com/in/andrew-kobus" 
+            <a
+              href="https://www.linkedin.com/in/andrew-kobus"
               className="hover:text-blue-400 transition-all duration-300 transform hover:scale-125"
             >
               <LinkedinIcon className="w-6 h-6" />
             </a>
-            <a 
-              href="mailto:andrewkobus4@gmail.com" 
+            <a
+              href="mailto:andrewkobus4@gmail.com"
               className="hover:text-blue-400 transition-all duration-300 transform hover:scale-125"
             >
               <MailIcon className="w-6 h-6" />
