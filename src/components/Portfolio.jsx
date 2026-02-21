@@ -352,7 +352,7 @@ const Portfolio = () => {
                   <div className="absolute right-0 top-0 w-20 h-20 bg-blue-500 dark:bg-blue-600 rounded-bl-full transform translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500"></div>
                 </div>
                 <h3 
-                  className="text-2xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 cursor-pointer"
+                  className="text-2xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 hover:underline transition-colors duration-300 cursor-pointer"
                   onClick={() => setSelectedProject(project)}
                 >
                   {project.title}{project.subtitle ? `: ${project.subtitle}` : ''}
@@ -434,33 +434,6 @@ const Portfolio = () => {
           </p>
         </div>
       </footer>
-
-      {/* Add CSS animations */}
-      <style jsx>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s forwards;
-          animation-delay: 0.2s;
-        }
-        
-        .animation-delay-200 {
-          animation-delay: 0.4s;
-        }
-        
-        .animation-delay-400 {
-          animation-delay: 0.6s;
-        }
-      `}</style>
     </div>
   );
 };
